@@ -1,0 +1,118 @@
+---
+interface Props {
+  label: string;
+  before: number;
+  after: number;
+  unit?: string;
+  note?: string;
+}
+
+const { label, before, after, unit = '', note } = Astro.props;
+
+const scaleMax = Math.max(before, after);
+const beforePct = (before / scaleMax) * 100;
+const afterPct = Math.max((after / scaleMax) * 100, 4);
+const factor = after > 0 ? (before / after) : 0;
+---
+
+<div class="ba">
+  <div class="ba-head">
+    <span class="ba-label">{label}</span>
+    {factor > 1 && <span class="ba-factor">{factor.toFixed(factor >= 10 ? 0 : 1)}× más rápido</span>}
+  </div>
+
+  <div class="ba-row">
+    <span class="ba-tag ba-tag--before">Actual</span>
+    <div class="ba-track">
+      <div class="ba-fill ba-fill--before" style={`width: ${beforePct}%`}></div>
+    </div>
+    <span class="ba-val">{before}{unit}</span>
+  </div>
+
+  <div class="ba-row">
+    <span class="ba-tag ba-tag--after">Astro</span>
+    <div class="ba-track">
+      <div class="ba-fill ba-fill--after" style={`width: ${afterPct}%`}></div>
+    </div>
+    <span class="ba-val ba-val--after">{after}{unit}</span>
+  </div>
+
+  {note && <p class="ba-note">{note}</p>}
+</div>
+
+<style>
+  .ba {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.1rem;
+  }
+  .ba-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .ba-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .ba-factor {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--color-good);
+    white-space: nowrap;
+  }
+  .ba-row {
+    display: grid;
+    grid-template-columns: 3.2rem 1fr auto;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.45rem;
+  }
+  .ba-tag {
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-align: center;
+    padding: 0.15rem 0;
+    border-radius: 4px;
+  }
+  .ba-tag--before { color: var(--color-critical); background: var(--color-critical-tint); }
+  .ba-tag--after { color: var(--color-good); background: var(--color-good-tint); }
+  .ba-track {
+    height: 0.6rem;
+    background: var(--gauge-track);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .ba-fill {
+    height: 100%;
+    border-radius: 999px;
+    transform-origin: left;
+    animation: ba-grow 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  @keyframes ba-grow {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+  .ba-fill--before { background: linear-gradient(90deg, color-mix(in srgb, var(--color-critical) 60%, white), var(--color-critical)); }
+  .ba-fill--after { background: linear-gradient(90deg, color-mix(in srgb, var(--color-good) 60%, white), var(--color-good)); }
+  .ba-val {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.78rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  .ba-val--after { color: var(--color-good); font-weight: 600; }
+  .ba-note {
+    font-size: 0.72rem;
+    color: var(--text-faint);
+    margin: 0.65rem 0 0;
+    line-height: 1.4;
+  }
+</style>

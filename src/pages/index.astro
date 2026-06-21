@@ -1,0 +1,217 @@
+---
+import DocsLayout from '../layouts/DocsLayout.astro';
+import ScoreGauge from '../components/ScoreGauge.astro';
+import BeforeAfterBar from '../components/BeforeAfterBar.astro';
+import StatCard from '../components/StatCard.astro';
+
+const hallazgos = [
+  { area: '01 · Stack técnico',   hallazgo: 'Drupal 8 EOL (nov. 2021), Apache 2.4.10 (2014), Bootstrap 3 + Foundation 5 simultáneos', severidad: 'Crítico', color: 'var(--color-critical)', slug: '01-stack' },
+  { area: '02 · Rendimiento',     hallazgo: 'LCP 15.2s móvil, PageSpeed 41 desktop / 53 móvil, 65.6% de código sin usar (1.999 KB), 3.3 MB por carga', severidad: 'Crítico', color: 'var(--color-critical)', slug: '02-rendimiento' },
+  { area: '03 · Seguridad',       hallazgo: 'SSL Labs grade B (TLS 1.0/1.1 activos), CSP ausente, jQuery 3.4.1 con 2 CVEs XSS', severidad: 'Crítico', color: 'var(--color-critical)', slug: '03-seguridad' },
+  { area: '04 · Accesibilidad',   hallazgo: 'Score 76–89, 17 errores de contraste (WAVE), targets táctiles insuficientes', severidad: 'Medio', color: 'var(--color-warn)', slug: '04-accesibilidad' },
+  { area: '05 · SEO & Analytics', hallazgo: 'Sin Open Graph, sin datos estructurados, UA obsoleto pendiente de eliminar (GA4 activo)', severidad: 'Alto', color: 'var(--color-high)', slug: '05-seo' },
+  { area: '06 · Propuesta',       hallazgo: 'Migración a Astro 5 + Tailwind 4 — sitio estático, sin base de datos, CDN global', severidad: 'Acción', color: 'var(--brand)', slug: '06-propuesta' },
+];
+---
+
+<DocsLayout title="Resumen ejecutivo">
+  <div class="privacy-banner">
+    <span class="privacy-icon">🔒</span>
+    <div>
+      <strong>Documento técnico privado</strong> — elaborado como ejercicio de análisis sobre
+      Cliente.com. No indexado en motores de búsqueda. Uso exclusivo del destinatario.
+    </div>
+  </div>
+
+  <h1>Auditoría Técnica — cliente.com</h1>
+  <p class="subtitle">
+    Este informe parte de una auditoría real sobre la web corporativa de una empresa cuyo nombre
+    se ha anonimizado por privacidad — la llamamos <strong>cliente.com</strong>—, manteniendo
+    intactos todos los datos técnicos. El análisis cubre los pilares que definen la calidad de un
+    sitio profesional: rendimiento, seguridad, accesibilidad y SEO; y concluye con una propuesta de
+    migración a una arquitectura moderna. Todo se obtuvo de forma no intrusiva, mediante
+    herramientas públicas e inspección con DevTools.
+  </p>
+
+  <section class="dashboard" aria-label="Estado técnico actual del sitio">
+    <div class="dash-bar">
+      <span class="dash-kicker">Estado actual · mayo 2026</span>
+    </div>
+
+    <div class="dash-gauges">
+      <ScoreGauge label="Rendimiento" value={53} sublabel="móvil · 41 desktop" />
+      <ScoreGauge label="Accesibilidad" value={89} sublabel="móvil · 100 desktop" />
+      <ScoreGauge label="SEO técnico" value={100} sublabel="básico (Lighthouse)" />
+    </div>
+
+    <div class="dash-grid">
+      <div class="dash-bars">
+        <BeforeAfterBar
+          label="LCP en móvil"
+          before={15.2}
+          after={1.5}
+          unit="s"
+          note="Umbral 'bueno' de Google: < 2.5 s. El sitio actual está 6× por encima del límite de lo aceptable."
+        />
+        <BeforeAfterBar
+          label="Performance Lighthouse (móvil)"
+          before={53}
+          after={95}
+          note="Objetivo tras migración a sitio estático en Astro."
+        />
+      </div>
+
+      <div class="dash-stats">
+        <StatCard value="2" label="Componentes críticos EOL (Drupal 8 · Apache 2.4.10)" tone="critical" />
+        <StatCard value="65.6%" label="Código cargado sin usar (1.999 KB)" tone="critical" />
+        <StatCard value="B" label="Grado SSL Labs — TLS 1.0/1.1 activos" tone="warn" />
+        <StatCard value="765 KB" label="Analítica por carga (UA muerto + GA4)" tone="warn" />
+      </div>
+    </div>
+  </section>
+
+  <h2>Sobre este documento</h2>
+  <p>
+    Este informe fue elaborado como ejercicio técnico independiente previo a una entrevista con Cliente.
+    El análisis abarca el stack tecnológico completo, métricas de rendimiento reales, configuración
+    de seguridad, accesibilidad WCAG y SEO técnico avanzado. Cada hallazgo está respaldado por
+    capturas de herramientas públicas: PageSpeed Insights, WebPageTest, Qualys SSL Labs, WAVE y
+    SecurityHeaders.com. Las capturas de pantalla de los resultados se incluyen en cada sección para facilitar la revisión técnica detallada.
+  </p>
+  <p>
+    Este informe ha sido desplegado en producción mediante <a href="https://vercel.com/" target="_blank" rel="noopener noreferrer">Vercel</a>, utilizando una cuenta personal y un dominio privado, con el objetivo de demostrar capacidades de análisis técnico, documentación y propuesta de migración hacia una arquitectura moderna.
+  </p>
+  <p>
+    El código fuente se encuentra alojado en un repositorio privado de <a href="https://github.com/bpstack" target="_blank" rel="noopener noreferrer">GitHub</a>. En caso de ser necesario, podría proporcionarse acceso para revisar el contenido completo de la auditoría y la implementación técnica.
+  </p>
+  <p>
+    URL de producción: <a href="https://web-audit-bp.vercel.app/" target="_blank" rel="noopener noreferrer">web-audit-bp.vercel.app</a>
+  </p>
+  <p>
+    La <a href="/06-propuesta">sección 06</a> recoge una propuesta de migración con hoja de ruta detallada, estimación de
+    esfuerzo por fases y criterios de priorización. El ROADMAP está listo para desarrollar si
+    Cliente decide dar ese paso.
+  </p>
+
+  <h2>Metodología</h2>
+  <p>
+    El análisis se realizó de forma completamente no destructiva — sin acceso al servidor, sin
+    credenciales y sin ningún acuerdo previo con Cliente. Toda la información fue obtenida
+    mediante herramientas públicas, inspección del código fuente y línea de comandos (<code>curl</code>).
+    El flujo de trabajo incorpora una configuración avanzada de agentes, skills y herramientas
+    de IA desarrollada en proyectos propios. La sección
+    <a href="/00-metodologia">00 · Metodología</a> documenta cada herramienta utilizada,
+    cómo reproducir los resultados y un flujo de trabajo reutilizable para auditar cualquier web.
+  </p>
+
+  <h2>Hallazgos por área</h2>
+  <div class="hallazgos-grid">
+    {hallazgos.map(h => (
+      <a class="hallazgo-card" href={`/${h.slug}`}>
+        <div class="hallazgo-header">
+          <span class="hallazgo-area">{h.area}</span>
+          <span class="hallazgo-badge" style={`background: color-mix(in srgb, ${h.color} 10%, transparent); color: ${h.color}; border: 1px solid color-mix(in srgb, ${h.color} 22%, transparent)`}>
+            {h.severidad}
+          </span>
+        </div>
+        <p class="hallazgo-text">{h.hallazgo}</p>
+      </a>
+    ))}
+  </div>
+</DocsLayout>
+
+<style>
+  .privacy-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    background: #fef3c7;
+    border: 1px solid #fbbf24;
+    border-radius: 6px;
+    padding: 0.875rem 1rem;
+    margin-bottom: 2rem;
+    font-size: 0.875rem;
+    color: #92400e;
+    line-height: 1.5;
+  }
+  .privacy-icon { font-size: 1rem; flex-shrink: 0; margin-top: 0.1rem; }
+  .privacy-banner a { color: #7c2d12; font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+  h1 { font-size: clamp(1.55rem, 1.2rem + 1.6vw, 2rem); font-weight: 700; color: var(--brand); margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+  .subtitle { color: var(--text-muted); font-size: 1rem; line-height: 1.6; margin-bottom: 2rem; }
+  h2 {
+    font-size: 1.125rem; font-weight: 700; color: var(--text);
+    margin-top: 2.5rem; margin-bottom: 1rem;
+    padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);
+  }
+  .dashboard {
+    margin: 2rem 0 2.5rem;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+  }
+  .dash-bar { margin-bottom: 1.25rem; }
+  .dash-kicker {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-faint);
+  }
+  .dash-gauges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem 2.5rem;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .dash-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .dash-bars { display: flex; flex-direction: column; gap: 1rem; }
+  .dash-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    align-content: start;
+  }
+  @media (max-width: 768px) {
+    .dashboard { padding: 1.1rem; }
+    .dash-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 420px) {
+    .dash-stats { grid-template-columns: 1fr; }
+  }
+
+  .hallazgos-grid { display: grid; gap: 0.75rem; }
+  .hallazgo-card {
+    display: block;
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 0.875rem 1rem; background: var(--surface-2);
+    text-decoration: none; color: inherit;
+    transition: border-color 0.15s, background 0.15s, transform 0.15s;
+  }
+  .hallazgo-card:hover {
+    border-color: var(--brand);
+    background: var(--brand-tint);
+    transform: translateY(-1px);
+  }
+  .hallazgo-header {
+    display: flex; align-items: center;
+    justify-content: space-between; margin-bottom: 0.375rem;
+  }
+  .hallazgo-area { font-weight: 600; font-size: 0.875rem; color: var(--text); }
+  .hallazgo-badge {
+    font-size: 0.6875rem; font-weight: 700;
+    padding: 0.2rem 0.5rem; border-radius: 999px;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .hallazgo-text { font-size: 0.8125rem; color: var(--text-muted); line-height: 1.5; margin: 0; }
+  p { color: var(--text-body); line-height: 1.7; margin-bottom: 1rem; }
+  a { color: var(--brand-link); }
+</style>

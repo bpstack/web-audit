@@ -1,0 +1,83 @@
+---
+interface Props {
+  label: string;
+  value: number;        // 0-100
+  sublabel?: string;
+  max?: number;
+}
+
+const { label, value, sublabel, max = 100 } = Astro.props;
+
+const pct = Math.max(0, Math.min(100, (value / max) * 100));
+const r = 42;
+const circ = 2 * Math.PI * r;
+const offset = circ - (pct / 100) * circ;
+
+// Umbrales tipo Lighthouse
+let color = 'var(--color-critical)'; // rojo: malo
+if (pct >= 90) color = 'var(--color-good)'; // verde: bueno
+else if (pct >= 50) color = 'var(--color-warn)'; // ámbar: mejorable
+---
+
+<div class="gauge" style={`--gauge-color: ${color}`}>
+  <svg viewBox="0 0 100 100" class="gauge-svg" role="img" aria-label={`${label}: ${value} de ${max}`}>
+    <circle class="gauge-track" cx="50" cy="50" r={r} fill="none" stroke-width="8" />
+    <circle
+      class="gauge-fill"
+      cx="50" cy="50" r={r}
+      fill="none"
+      stroke-width="8"
+      stroke-linecap="round"
+      stroke-dasharray={circ}
+      stroke-dashoffset={offset}
+      transform="rotate(-90 50 50)"
+      style={`--circ: ${circ}; --offset: ${offset}`}
+    />
+    <text x="50" y="50" class="gauge-value" text-anchor="middle" dominant-baseline="central">{value}</text>
+  </svg>
+  <p class="gauge-label">{label}</p>
+  {sublabel && <p class="gauge-sub">{sublabel}</p>}
+</div>
+
+<style>
+  .gauge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.1rem;
+  }
+  .gauge-svg {
+    width: 84px;
+    height: 84px;
+  }
+  .gauge-track {
+    stroke: var(--gauge-track);
+  }
+  .gauge-fill {
+    stroke: var(--gauge-color);
+    animation: gauge-draw 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  @keyframes gauge-draw {
+    from { stroke-dashoffset: var(--circ); }
+    to { stroke-dashoffset: var(--offset); }
+  }
+  .gauge-value {
+    font-family: 'Fira Code', monospace;
+    font-size: 1.55rem;
+    font-weight: 600;
+    fill: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
+  .gauge-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0.35rem 0 0;
+  }
+  .gauge-sub {
+    font-size: 0.7rem;
+    color: var(--text-faint);
+    margin: 0;
+  }
+</style>

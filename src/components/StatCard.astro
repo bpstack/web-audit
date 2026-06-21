@@ -1,0 +1,47 @@
+---
+interface Props {
+  value: string;
+  label: string;
+  tone?: 'critical' | 'warn' | 'good' | 'neutral';
+}
+
+const { value, label, tone = 'neutral' } = Astro.props;
+---
+
+<div class={`stat stat--${tone}`}>
+  <span class="stat-value">{value}</span>
+  <span class="stat-label">{label}</span>
+</div>
+
+<style>
+  .stat {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-left-width: 3px;
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .stat-value {
+    font-family: 'Fira Code', monospace;
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1.1;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-label {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    line-height: 1.35;
+  }
+  .stat--critical { border-left-color: var(--color-critical); }
+  .stat--critical .stat-value { color: var(--color-critical); }
+  .stat--warn { border-left-color: var(--color-warn); }
+  .stat--warn .stat-value { color: var(--color-warn); }
+  .stat--good { border-left-color: var(--color-good); }
+  .stat--good .stat-value { color: var(--color-good); }
+  .stat--neutral { border-left-color: var(--brand); }
+</style>

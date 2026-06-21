@@ -1,0 +1,43 @@
+# build output
+dist/
+.vercel/
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+
+# environment variables
+.env
+.env.production
+
+# macOS-specific files
+.DS_Store
+
+# jetbrains setting folder
+.idea/
+
+# AI / agent tooling — nunca al repo público
+.claude/
+.agents/
+.opencode/
+.cursor/
+.windsurf/
+.aider*
+CLAUDE.md
+AGENTS.md
+.skills/
+skills-lock.json
+
+# docs internas del proceso de anonimización — no se publican
+ROADMAP-ANON.md
+SESSION.md
+FASE2-IMAGENES.md
+prompt.md

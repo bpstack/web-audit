@@ -1,0 +1,18 @@
+---
+import { getCollection, render } from 'astro:content';
+import DocsLayout from '../layouts/DocsLayout.astro';
+
+const { slug } = Astro.params;
+const sections = await getCollection('sections');
+const section = sections.find(s => s.data.slug === slug);
+
+if (!section) {
+  return Astro.redirect('/', 302);
+}
+
+const { Content } = await render(section);
+---
+
+<DocsLayout title={section.data.title} description={section.data.description}>
+  <Content />
+</DocsLayout>

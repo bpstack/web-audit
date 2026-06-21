@@ -1,0 +1,140 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-brand: #1b3991;
+  --color-brand-dark: #122970;
+  --color-brand-light: #e8edf8;
+  --color-muted: #6b7280;
+  --color-border: #e5e7eb;
+}
+
+/* ── Semantic runtime tokens (light) ── */
+:root {
+  --bg: #f0f2f5;
+  --surface: #ffffff;
+  --surface-2: #fafafa;
+  --surface-3: #f9fafb;
+
+  --text: #1a1a1a;
+  --text-body: #374151;
+  --text-muted: #6b7280;
+  --text-faint: #9ca3af;
+
+  --border: #e5e7eb;
+  --border-soft: #e8edf8;
+
+  --brand: #1b3991;
+  --brand-2: #122970;
+  --brand-tint: #e8edf8;
+  --brand-fg: #ffffff;
+  --brand-link: #1b3991;
+
+  --code-bg: #f3f4f6;
+  --pre-bg: #1e2433;
+  --pre-fg: #e5e7eb;
+
+  --shadow: 0 0 40px rgba(0, 0, 0, 0.08);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04);
+
+  --gauge-track: #e5e7eb;
+
+  --num-faint: #c7d0e8;
+
+  --color-good: #16a34a;
+  --color-good-tint: #16a34a18;
+  --color-warn: #d97706;
+  --color-high: #ea580c;
+  --color-critical: #dc2626;
+  --color-critical-tint: #dc262618;
+}
+
+/* ── Dark theme ── */
+html.dark {
+  --bg: #0a0c10;
+  --surface: #14181f;
+  --surface-2: #1a1f29;
+  --surface-3: #1d232e;
+
+  --text: #e6edf3;
+  --text-body: #c2cdd9;
+  --text-muted: #9aa6b5;
+  --text-faint: #6b7585;
+
+  --border: #2a313c;
+  --border-soft: #262d38;
+
+  --brand: #5b82e0;
+  --brand-2: #6b8fe0;
+  --brand-tint: #1c2740;
+  --brand-fg: #ffffff;
+  --brand-link: #7fa0ec;
+
+  --code-bg: #1d232e;
+  --pre-bg: #05070a;
+  --pre-fg: #d6dde6;
+
+  --shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.4);
+
+  --gauge-track: #2a313c;
+
+  --num-faint: #3b4660;
+
+  --color-good: #4ade80;
+  --color-good-tint: #4ade8018;
+  --color-warn: #fbbf24;
+  --color-high: #fb923c;
+  --color-critical: #f87171;
+  --color-critical-tint: #f8717118;
+}
+
+html {
+  color-scheme: light;
+  scroll-behavior: smooth;
+}
+html.dark {
+  color-scheme: dark;
+}
+
+/* ── Theme toggle (shared) ── */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.theme-toggle:hover {
+  color: var(--brand);
+  border-color: var(--brand);
+}
+.theme-toggle .icon-sun { display: none; }
+.theme-toggle .icon-moon { display: block; }
+html.dark .theme-toggle .icon-sun { display: block; }
+html.dark .theme-toggle .icon-moon { display: none; }
+
+/* ── Focus ring (a11y) ── */
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

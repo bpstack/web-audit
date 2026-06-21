@@ -1,0 +1,101 @@
+---
+import { Image } from 'astro:assets';
+import avatar from '../assets/avatar.png';
+---
+<footer class="footer">
+  <div class="footer-inner">
+    <a href="https://github.com/bpstack" target="_blank" rel="noopener noreferrer" class="footer-avatar-link">
+      <Image
+        src={avatar}
+        alt="Salvador Pérez"
+        width={32}
+        height={32}
+        class="footer-avatar"
+      />
+    </a>
+    <span class="footer-author">Salvador Pérez</span>
+    <span class="footer-sep">·</span>
+    <a href="https://www.stackbp.es/" target="_blank" rel="noopener noreferrer" class="footer-link">stackbp.es</a>
+    <span class="footer-sep">·</span>
+    <span class="footer-privacy">Documento privado · No indexado</span>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    position: sticky;
+    bottom: 0;
+    border-top: 1px solid var(--border);
+    padding: 0.875rem 1.5rem;
+    background: var(--surface);
+    z-index: 10;
+  }
+  .footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 0.45rem;
+    white-space: nowrap;
+    font-size: clamp(0.62rem, 2.5vw, 0.875rem);
+    color: var(--text-muted);
+  }
+  .footer-avatar-link {
+    flex-shrink: 0;
+    display: inline-flex;
+    border-radius: 50%;
+    outline: 2px solid transparent;
+    transition: outline-color 0.15s;
+  }
+  .footer-avatar-link:hover {
+    outline-color: var(--brand);
+  }
+  .footer-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+  }
+  .footer-author {
+    font-weight: 600;
+    color: var(--brand-link);
+  }
+  .footer-sep {
+    color: var(--border);
+  }
+  .footer-link {
+    color: var(--brand-link);
+    text-decoration: none;
+  }
+  .footer-link:hover {
+    text-decoration: underline;
+  }
+  .footer-privacy {
+    color: var(--text-faint);
+  }
+
+  @media (max-width: 768px) {
+    .footer {
+      padding: 0.7rem 0.75rem;
+    }
+    .footer-inner {
+      gap: 0.35rem 0.45rem;
+    }
+    .footer-avatar {
+      width: 22px;
+      height: 22px;
+    }
+  }
+
+  /* Móviles estrechos: permitir salto de línea para no recortar el texto */
+  @media (max-width: 380px) {
+    .footer-inner {
+      flex-wrap: wrap;
+      white-space: normal;
+      text-align: center;
+    }
+    /* Ocultar separadores redundantes cuando el contenido se apila */
+    .footer-sep { display: none; }
+  }
+</style>

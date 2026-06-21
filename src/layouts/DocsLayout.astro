@@ -1,0 +1,526 @@
+---
+import Sidebar from '../components/Sidebar.astro';
+import Footer from '../components/Footer.astro';
+import CommandPalette from '../components/CommandPalette.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Auditoría técnica completa de cliente.com — mayo 2026' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="description" content={description} />
+    <title>{title} — Auditoría cliente.com</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet" />
+    <script is:inline>
+      (() => {
+        try {
+          const stored = localStorage.getItem('theme');
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (stored === 'dark' || (!stored && prefersDark)) {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <!-- Lightbox -->
+    <div id="lightbox" role="dialog" aria-modal="true" aria-label="Visualizador de imagen" aria-hidden="true">
+      <button id="lightbox-close" aria-label="Cerrar imagen">✕</button>
+      <img id="lightbox-img" src="" alt="" />
+    </div>
+
+    <!-- Reading progress -->
+    <div class="read-progress" id="read-progress"></div>
+
+    <!-- Mobile header -->
+    <header class="mobile-header">
+      <button class="menu-btn" id="menu-btn" aria-label="Abrir menú">
+        <span></span><span></span><span></span>
+      </button>
+      <span class="mobile-title">Auditoría cliente.com</span>
+      <button class="theme-toggle theme-toggle--mobile" data-theme-toggle aria-label="Cambiar tema claro/oscuro">
+        <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </header>
+
+    <!-- Overlay for mobile -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Command palette -->
+    <CommandPalette />
+
+    <div class="shell">
+      <aside class="sidebar-wrap" id="sidebar">
+        <Sidebar />
+      </aside>
+
+      <div class="main-wrap">
+        <main class="content">
+          <slot />
+        </main>
+        <Footer />
+      </div>
+    </div>
+
+    <script>
+      function initLightbox() {
+        const lb = document.getElementById('lightbox');
+        const lbImg = document.getElementById('lightbox-img') as HTMLImageElement;
+        if (!lb || !lbImg) return;
+
+        const open = (src: string, alt: string) => {
+          lbImg.src = src;
+          lbImg.alt = alt;
+          lb.classList.add('open');
+          lb.setAttribute('aria-hidden', 'false');
+          document.documentElement.classList.add('lightbox-open');
+        };
+
+        document.querySelectorAll('.content img:not([data-no-lightbox])').forEach(img => {
+          (img as HTMLElement).addEventListener('click', () => {
+            open((img as HTMLImageElement).src, (img as HTMLImageElement).alt);
+          });
+        });
+
+        const closeBtn = document.getElementById('lightbox-close');
+        const close = () => {
+          lb.classList.remove('open');
+          lb.setAttribute('aria-hidden', 'true');
+          document.documentElement.classList.remove('lightbox-open');
+        };
+
+        lb.addEventListener('click', e => { if (e.target === lb) close(); });
+        closeBtn?.addEventListener('click', close);
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+      }
+      initLightbox();
+    </script>
+
+    <script>
+      function initMenu() {
+        const btn = document.getElementById('menu-btn');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        if (!btn || !sidebar || !overlay) return;
+
+        const toggle = () => {
+          sidebar.classList.toggle('open');
+          overlay.classList.toggle('visible');
+        };
+
+        btn.addEventListener('click', toggle);
+        overlay.addEventListener('click', toggle);
+      }
+      initMenu();
+    </script>
+
+    <script>
+      function initTheme() {
+        const root = document.documentElement;
+        const apply = (dark: boolean) => {
+          root.classList.toggle('dark', dark);
+          try { localStorage.setItem('theme', dark ? 'dark' : 'light'); } catch (e) {}
+        };
+        document.querySelectorAll('[data-theme-toggle]').forEach(btn => {
+          btn.addEventListener('click', () => apply(!root.classList.contains('dark')));
+        });
+      }
+      initTheme();
+    </script>
+
+    <script>
+      function initProgress() {
+        const bar = document.getElementById('read-progress');
+        if (!bar) return;
+        const update = () => {
+          const h = document.documentElement;
+          const max = h.scrollHeight - h.clientHeight;
+          const pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
+          bar.style.width = pct + '%';
+        };
+        update();
+        window.addEventListener('scroll', update, { passive: true });
+        window.addEventListener('resize', update, { passive: true });
+      }
+      initProgress();
+    </script>
+  </body>
+</html>
+
+<style>
+  :global(*) { box-sizing: border-box; }
+
+  :global(html), :global(body) {
+    overflow-x: clip;
+    max-width: 100%;
+  }
+
+  :global(body) {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    transition: background 0.25s ease, color 0.25s ease;
+  }
+
+  /* ── Shell centrado ── */
+  .shell {
+    display: flex;
+    max-width: 1200px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+
+  /* ── Sidebar ── */
+  .sidebar-wrap {
+    width: 240px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  /* ── Área principal ── */
+  .main-wrap {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .content {
+    flex: 1;
+    padding: 2.5rem 3rem 6rem;
+  }
+
+  /* ── Imágenes en contenido ── */
+  :global(.content img) {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    margin: 1.5rem auto 0.5rem;
+    cursor: zoom-in;
+    transition: opacity 0.15s;
+  }
+  :global(.content img:hover) { opacity: 0.92; }
+
+  :global(.content p:has(img)) {
+    margin: 0;
+  }
+
+  :global(.content figure.img-figure) {
+    margin: 1.5rem 0 0.25rem;
+    padding: 0;
+  }
+  :global(.content figure.img-figure img) {
+    margin: 0 auto;
+  }
+  :global(.content figure.img-figure figcaption) {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+    line-height: 1.4;
+    font-style: italic;
+    padding: 0 1rem;
+  }
+
+  /* ── Lightbox ── */
+  :global(html.lightbox-open) {
+    overflow: hidden;
+  }
+  :global(html.lightbox-open .mobile-header) {
+    z-index: 1;
+  }
+
+  :global(#lightbox) {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.88);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem 1.5rem;
+    cursor: zoom-out;
+    touch-action: none;
+    overflow: hidden;
+  }
+  :global(#lightbox.open) { display: flex; }
+
+  :global(#lightbox img) {
+    display: block;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    max-height: 85dvh;
+    min-width: 0;
+    min-height: 0;
+    border-radius: 6px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    cursor: default;
+    object-fit: contain;
+  }
+
+  :global(#lightbox-close) {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    border: 1.5px solid rgba(255,255,255,0.3);
+    color: white;
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+    z-index: 10000;
+  }
+  :global(#lightbox-close:hover) {
+    background: rgba(255,255,255,0.28);
+  }
+
+  /* ── Reading progress ── */
+  .read-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0;
+    background: linear-gradient(90deg, var(--brand), var(--brand-2));
+    z-index: 300;
+    transition: width 0.1s linear;
+    pointer-events: none;
+  }
+
+  /* ── Mobile header ── */
+  .mobile-header {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border-soft);
+    padding: 0.75rem 1rem;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .theme-toggle--mobile {
+    margin-left: auto;
+  }
+
+  .mobile-title {
+    color: var(--text);
+    font-weight: 600;
+    font-size: 0.875rem;
+  }
+
+  .menu-btn {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+  }
+
+  .menu-btn span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--brand);
+    border-radius: 2px;
+  }
+
+  /* ── Overlay ── */
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 90;
+  }
+
+  /* ── Prose styles ── */
+  :global(.content h1) {
+    font-size: clamp(1.55rem, 1.2rem + 1.6vw, 2rem);
+    font-weight: 700;
+    color: var(--brand);
+    margin: 0 0 0.5rem;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+  :global(.content h2) {
+    font-size: clamp(1.15rem, 1rem + 0.7vw, 1.35rem);
+    font-weight: 700;
+    color: var(--text);
+    margin: 2.5rem 0 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: -0.01em;
+    scroll-margin-top: 5rem;
+  }
+  :global(.content h3) {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--brand);
+    margin: 1.75rem 0 0.5rem;
+    scroll-margin-top: 5rem;
+  }
+  :global(.content) {
+    overflow-wrap: break-word;
+  }
+  :global(.content p) {
+    line-height: 1.7;
+    color: var(--text-body);
+    margin-bottom: 1rem;
+  }
+  :global(.content a) { color: var(--brand-link); }
+  :global(.content blockquote) {
+    border-left: 3px solid var(--brand);
+    background: var(--brand-tint);
+    padding: 0.75rem 1rem;
+    margin: 1.5rem 0;
+    border-radius: 0 4px 4px 0;
+    font-style: normal;
+    color: var(--text-body);
+  }
+  :global(.content blockquote p) { margin: 0; font-size: 0.9rem; color: inherit; }
+  :global(.content table) {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    margin: 1.5rem 0;
+    font-variant-numeric: tabular-nums;
+  }
+  :global(.content th) {
+    background: var(--brand);
+    color: var(--brand-fg);
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    font-weight: 600;
+  }
+  :global(.content td) {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    color: var(--text-body);
+  }
+  :global(.content tr:nth-child(even) td) { background: var(--surface-3); }
+  :global(.content code) {
+    background: var(--code-bg);
+    color: var(--text);
+    padding: 0.15rem 0.35rem;
+    border-radius: 3px;
+    font-size: 0.875em;
+    font-family: 'Fira Code', monospace;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+  :global(.content pre) {
+    background: var(--pre-bg);
+    color: var(--pre-fg);
+    padding: 1.25rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.8rem;
+    line-height: 1.6;
+    margin: 1.5rem 0;
+    border: 1px solid var(--border);
+  }
+  :global(.content pre code) { background: none; padding: 0; color: inherit; }
+  :global(.content ul), :global(.content ol) { padding-left: 1.5rem; margin-bottom: 1rem; }
+  :global(.content li) { margin-bottom: 0.35rem; color: var(--text-body); line-height: 1.6; }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .mobile-header { display: flex; }
+
+    .shell {
+      max-width: 100%;
+      box-shadow: none;
+      padding-top: 48px; /* mobile header height */
+    }
+
+    .sidebar-wrap {
+      position: fixed;
+      top: 48px;
+      left: 0;
+      height: calc(100vh - 48px);
+      z-index: 100;
+      transform: translateX(-100%);
+      transition: transform 0.25s ease;
+      width: 260px;
+    }
+
+    .sidebar-wrap.open {
+      transform: translateX(0);
+    }
+
+    .overlay.visible {
+      display: block;
+    }
+
+    .content {
+      padding: 1.5rem 1.25rem 5rem;
+    }
+
+    /* Targets táctiles cómodos en el drawer (WCAG 2.5.8: mín 24px, objetivo ~44px) */
+    :global(.sidebar .nav-item) {
+      padding-top: 0.6rem;
+      padding-bottom: 0.6rem;
+    }
+    :global(.sidebar .cmdk-trigger) {
+      padding-top: 0.6rem;
+      padding-bottom: 0.6rem;
+    }
+    .menu-btn {
+      padding: 8px;
+      margin: -4px;
+    }
+
+    /* Tablas anchas: scroll interno en vez de quedar cortadas por overflow-x: clip */
+    :global(.content table) {
+      display: block;
+      max-width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    :global(#lightbox) {
+      padding: 3.5rem 0.75rem 0.75rem;
+    }
+    :global(#lightbox img) {
+      max-width: 100%;
+      max-height: 78dvh;
+    }
+  }
+</style>
