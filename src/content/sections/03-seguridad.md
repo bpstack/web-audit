@@ -153,14 +153,14 @@ jQuery procese HTML controlado por él. En la práctica:
 ### La clave detectada
 
 ```
-AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+<API_KEY_REDACTADA>
 ```
 
 Visible en el HTML fuente de cualquier página que tenga el mapa incrustado:
 
 ```html
 <script
-  src="//maps.googleapis.com/maps/api/js?key=AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+  src="//maps.googleapis.com/maps/api/js?key=<API_KEY_REDACTADA>"
   type="text/javascript"
 ></script>
 ```
@@ -207,7 +207,7 @@ origen (sin hacer peticiones reales) o confirmándolo con el administrador del s
 
 1. Acceder a [Google Cloud Console](https://console.cloud.google.com/) → API y servicios →
    Credenciales.
-2. Verificar que la key `AIzaSyAU...` tiene "Restricciones de HTTP referrers" configuradas para
+2. Verificar que la key `<API_KEY_REDACTADA>` tiene "Restricciones de HTTP referrers" configuradas para
    `*.cliente.com/*`.
 3. Verificar que solo tiene habilitada la "Maps JavaScript API" y ninguna API adicional.
 4. Activar alertas de facturación para detectar usos anómalos.

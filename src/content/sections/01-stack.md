@@ -190,7 +190,7 @@ Servidas desde **Google Fonts** (petición externa en cada carga):
 
 | Servicio               | Clave / Endpoint                          |
 | ---------------------- | ----------------------------------------- |
-| **Google Maps JS API** | `AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX` |
+| **Google Maps JS API** | `<API_KEY_REDACTADA>` |
 
 Ver informe de seguridad (`03-seguridad.md`) para análisis de riesgo de la API key expuesta.
 
