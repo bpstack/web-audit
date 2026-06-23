@@ -71,6 +71,13 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
 </nav>
 
 <style>
+  /* En móvil el toggle de tema ya está en el header; ocultamos el del drawer para no duplicarlo */
+  @media (max-width: 768px) {
+    .sidebar .theme-toggle {
+      display: none;
+    }
+  }
+
   .sidebar {
     width: 240px;
     height: 100%;
