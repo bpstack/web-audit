@@ -35,9 +35,3 @@ CLAUDE.md
 # AGENTS.md SÍ se versiona: contiene solo el bloque context7 + convenciones (auditoría §7 pasada)
 .skills/
 skills-lock.json
-
-# docs internas del proceso de anonimización — no se publican
-ROADMAP-ANON.md
-SESSION.md
-FASE2-IMAGENES.md
-prompt.md
