@@ -71,8 +71,10 @@ El `README.md` dice _"sin framework de UI ni CSS utilitario"_. **No es exacto**:
 instalado y **activo en el build** (`@import "tailwindcss"` aplica el preflight al render). Medido
 sobre el árbol:
 
-- **2 clases utilitarias** en todo `src/` (dos `grid`). El estilo real son **clases propias** y
-  CSS moderno en bloques `<style>` de cada `.astro` (variables, `color-mix`, `clamp`).
+- **Cero clases utilitarias** en todo `src/`, y ningún `@apply`. Ojo al contarlas: `dash-grid` y
+  `hallazgos-grid` (`src/pages/index.astro`) **son clases propias**, no la utility `grid`. El
+  estilo real es CSS moderno en bloques `<style>` de cada `.astro` (variables, `color-mix`,
+  `clamp`).
 - **Tokens brand duplicados**: `@theme` define `--color-brand` (sin uso) y `:root` define
   `--brand` con el mismo hex (**~40 usos** — es el sistema vivo). Si cambias un color de marca,
   toca el de `:root`; y no mezcles ambos sistemas.
