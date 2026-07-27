@@ -32,7 +32,7 @@ pnpm-debug.log*
 .windsurf/
 .aider*
 CLAUDE.md
-AGENTS.md
+# AGENTS.md SÍ se versiona: contiene solo el bloque context7 + convenciones (auditoría §7 pasada)
 .skills/
 skills-lock.json
 
