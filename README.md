@@ -109,3 +109,13 @@ Despliegue automático en **Vercel** (modo serverless con `@astrojs/vercel`).
 - Imágenes optimizadas a WebP.
 - Privacidad: `robots.txt` con `Disallow: /` y `<meta name="robots" content="noindex, nofollow">`.
 - Acceso controlado por la variable de entorno `ACCESS_TOKEN`.
+
+---
+
+## Licencia
+
+**Todos los derechos reservados** — ver [LICENSE](LICENSE).
+
+La auditoría es obra propia: puede consultarse para evaluación y aprendizaje, pero no se
+autoriza copiarla, modificarla ni republicarla. El código del sitio se publica como
+referencia, sin licencia de uso.
