@@ -10,7 +10,7 @@ moderna. El análisis se realizó de forma no intrusiva, con herramientas públi
 mediante DevTools.
 
 **Producción:** [web-audit-bp.vercel.app](https://web-audit-bp.vercel.app/)
-**Autor:** Salvador Pérez — [stackbp.es](https://www.stackbp.es/)
+**Autor:** [bpstack](https://www.stackbp.es/)
 
 ---
 

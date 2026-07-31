@@ -7,7 +7,7 @@ description: "Resumen ejecutivo con todos los hallazgos, prioridades y recomenda
 # Informe Final de Auditoría — cliente.com
 
 > **Fecha:** 26 de mayo de 2026
-> **Elaborado por:** Salvador Pérez — [stackbp.es](https://www.stackbp.es/)
+> **Elaborado por:** bpstack — [stackbp.es](https://www.stackbp.es/)
 > **Publicado en:** [web-audit-bp.vercel.app](https://web-audit-bp.vercel.app/)
 > **Alcance:** Análisis completo de stack tecnológico, rendimiento, seguridad, accesibilidad y SEO
 > **Documentos de soporte:** Informes `00` al `06` de esta auditoría
