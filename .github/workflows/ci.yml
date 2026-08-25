@@ -1,0 +1,39 @@
+# El CI invoca `pnpm run verify` y nada más. Qué comprueba `verify` lo define el
+# `package.json`, así que añadir una comprobación no toca este fichero, y lo que
+# corre en local es lo mismo que corre aquí.
+#
+# Requisitos: script `verify` en `package.json`, `.nvmrc` y `packageManager`.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      # Actions fijadas al major. Revisa que el major siga sobre un runtime de
+      # Node vivo: cuando GitHub apaga el viejo, el CI se pone en rojo sin que
+      # nadie haya tocado el repo.
+      - uses: actions/checkout@v7
+
+      # La versión de pnpm sale de `packageManager`.
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      # `--frozen-lockfile`: instala las versiones exactas del lockfile o falla.
+      # Sin él, el CI puede resolver versiones distintas a las locales.
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm run verify
+
+      # Descomentar cuando haya dependencias de producción. Va fuera de `verify`
+      # porque depende del aviso de un tercero y puede virar a rojo sin que el
+      # repo cambie; un CI intermitente se acaba ignorando (ADR-019).
+      # - run: pnpm audit --audit-level=high
