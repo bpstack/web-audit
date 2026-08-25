@@ -31,7 +31,7 @@ pnpm-debug.log*
 .cursor/
 .windsurf/
 .aider*
-CLAUDE.md
+# CLAUDE.md SÍ se versiona desde el 2026-08-26: es un puntero de una línea a AGENTS.md (ADR-004)
 # AGENTS.md SÍ se versiona: contiene solo el bloque context7 + convenciones (auditoría §7 pasada)
 .skills/
 skills-lock.json
