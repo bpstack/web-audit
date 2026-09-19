@@ -97,6 +97,18 @@
   es el que leen los demás agentes. El repo se comportaría distinto según qué
   herramienta lo abriese.
 
+## ADR-005 — ADR-001 se revisa: re-estimate trigger para el nivel de seguridad
+
+- **Estado:** 🔶 propuesta (2026-09-19)
+- **Fecha:** 2026-09-19
+- **Decisión:** Añadir a ADR-001 la línea `Re-estimate when:` con el disparador
+  «accounts and payments are added». El nivel sigue siendo L2; lo que cambia es
+  que ahora hay un disparador declarado para subirlo.
+- **Motivo:** El propietario confirmó el 2026-09-19 que hay planes de cuentas de
+  usuario y pagos, lo que elevaría el nivel a L3. Sin la línea, el agente no
+  sabe cuándo dejar de citar ADR-001 como vigente y proponer una reevaluación.
+- **Revise:** ADR-001 (✅ aceptada, 2026-08-26).
+
 <!-- reglas:inicio · plantilla DECISIONS v1 · generado desde `setup` · no editar
 
   🔴 NACE COMO `🔶 propuesta`. Solo el propietario lo pasa a `✅ aceptada`.
