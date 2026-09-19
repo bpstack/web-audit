@@ -82,10 +82,10 @@ public/
 ## Desarrollo
 
 ```bash
-pnpm install      # instalar dependencias
-pnpm dev          # servidor de desarrollo (localhost:4321)
-pnpm build        # build de producción
-pnpm preview      # previsualizar el build
+pnpm install        # instalar dependencias
+pnpm run dev        # servidor de desarrollo (localhost:4321)
+pnpm run build      # build de producción
+pnpm run preview    # previsualizar el build
 ```
 
 > En desarrollo el control de acceso se desactiva automáticamente para no entorpecer el trabajo local.
