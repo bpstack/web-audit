@@ -58,7 +58,7 @@ Tres trampas medidas en este repo, con el síntoma por delante:
   CUÁNDO: al cerrar una tarea, no al cerrar la sesión. Al final ya no queda
   contexto para escribirlo bien.
 
-  TAMAÑO: ~80 líneas es un **aviso**, no un límite. Pasarse obliga a mirar si
+  TAMAÑO: 200 líneas es un **aviso**, no un límite. Pasarse obliga a mirar si
   hay algo gastado; si todo lo que hay sigue vivo, se queda. Se cuenta con
   `wc -l`, que incluye las líneas en blanco — otras herramientas no, y entonces
   el tope discute consigo mismo.
