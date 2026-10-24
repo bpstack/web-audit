@@ -171,9 +171,12 @@ verificar. Si tras un cambio `verify` sigue verde, no lo has roto tú.
    not exist, and `true` for one that changed nothing._
 
 2. **"Done" means verified by CI, not asserted.** What has not passed the gate
-   stays pending, and that is said.
+   stays pending, and that is said. **A test only verifies if it can fail:** its
+   expected value comes from the requirement, never from the code under test —
+   neither its output pasted back nor its logic repeated.
 
-   _A green on your machine only proves your machine._
+   _A green on your machine only proves your machine; a value copied from the
+   code, only the code._
 
 ## What the AI does not decide
 
